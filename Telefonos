@@ -1,0 +1,83 @@
+public class Telefonos {
+	private NodoTelefonos inicio;
+
+	public void agregar(String num) {
+		NodoTelefonos nuevo = new NodoTelefonos(num);
+		nuevo.setLiga(this.inicio);
+		this.inicio = nuevo;
+	}
+
+	public int contador() {
+		NodoTelefonos q = this.inicio;
+		int contador = 0;
+
+		while (q != null) {
+			q = q.getLiga();
+			contador++;
+		}
+
+		return contador;
+
+	}
+
+	public void imprime(Double num) {
+		NodoTelefonos aux = inicio;
+		while (aux != null) {
+			System.out.printf("Teléfono: %.0f %n ", aux.getLiga());
+			aux = aux.getLiga();
+		}
+		System.out.printf("%n ");
+
+	}
+
+	public void eliminar(String num) {
+		NodoTelefonos q = this.inicio;
+		NodoTelefonos t = null;
+		boolean band = true;
+
+		while (q.getInfo() != num && band) {
+			if (q.getLiga() != null) {
+				t = q;
+				q = q.getLiga();
+			} else {
+				band = false;
+			}
+		}
+		if (!band) {
+			System.out.println("Teléfono inválido");
+		} else {
+			if (this.inicio == q) {
+				this.inicio = q.getLiga();
+			} else {
+				t.setLiga(q.getLiga());
+			}
+		}
+
+	}
+
+	public NodoTelefonos getInicio() {
+		return inicio;
+	}
+
+	public void setInicio(NodoTelefonos inicio) {
+		this.inicio = inicio;
+	}
+
+	public String toString() {
+		String resultado = "{ ";
+		if (getInicio() == null) {
+			return "No hay números en tu agenda";
+
+		} else {
+			NodoTelefonos q = this.inicio;
+			while (q != null) {
+				resultado += q.getInfo().toString() + ", ";
+				q = q.getLiga();
+			}
+
+		}
+		return resultado.substring(0, resultado.length() - 1) + " }";
+
+	}
+
+}
