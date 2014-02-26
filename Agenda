@@ -1,0 +1,195 @@
+import java.util.Scanner;
+
+public class Agenda {
+	
+	public NodoContacto inicio;
+
+	public String scaner() {
+		Scanner a = new Scanner(System.in);
+		String cadena = a.nextLine();
+		a.reset();
+		return cadena;
+
+	}
+
+	public double scanner() {
+		Scanner num = new Scanner(System.in);
+		double numero = num.nextDouble();
+		num.reset();
+		return numero;
+	}
+
+	public void inicia() {
+		Integer seleccion = 0;
+		do {
+			this.menu();
+			System.out.println("Elige tu opción");
+
+			seleccion = this.validaMenu();
+			switch (seleccion) {
+
+			case 1:
+				this.agregarContacto();
+				break;
+
+			case 2:
+				this.eliminaContacto();
+				break;
+			case 3:
+				this.buscaContacto();
+				break;
+
+			}
+		} while (seleccion != 4);
+	}
+
+	public void menu() {
+		System.out.println("MENÚ:\n\n");
+		System.out.println("1.- Agregar contacto");
+		System.out.println("2.- Eliminar contacto");
+		System.out.println("3.- Buscar contacto");
+		System.out.println("4.- Salir");
+	}
+
+	public Integer validaMenu() {
+		boolean bandera = false;
+		Integer aux = 0;
+		while (bandera == false) {
+			String cad = null;
+			cad = this.scaner();
+			if (this.valida(cad)) {
+				aux = Integer.parseInt(cad);
+				bandera = true;
+			} else {
+				System.out.println("Opción inválida");
+
+			}
+		}
+
+		return aux;
+
+	}
+
+	public boolean valida(String cadena) {
+		boolean bandera = true;
+		for (int i = 0; i < cadena.length(); i++) {
+			if (cadena.charAt(i) < 49 || cadena.charAt(i) > 54) {
+				bandera = false;
+			}
+		}
+
+		return bandera;
+	}
+
+	public void agregarContacto() {
+		Contacto nueva = new Contacto();
+		NodoContacto nuevo = new NodoContacto(nueva);
+		this.rellenaContacto(nueva);
+		if (inicio == null) {
+			inicio = nuevo;
+		} else {
+			NodoContacto aux = inicio;
+			while (aux.getSiguiente() != null) {
+				aux = aux.getSiguiente();
+			}
+			aux.setSiguiente(nuevo);
+			aux = nuevo;
+		}
+
+	}
+
+	public void rellenaContacto(Contacto c) {
+		System.out.println("Nombre");
+		c.nombre = this.scaner();
+		System.out.println("Dirección");
+		c.direccion = this.scaner();
+		System.out.println("Fecha de Naciemiento");
+		c.fechaNacimiento = this.scaner();
+		do {
+			System.out.println("Teléfono");
+			Double num = this.scanner();
+			c.getTelefono().imprime(num);
+			System.out.println("¿Desea insertar otro teléfono? Oprima 1");
+			System.out.println("Oprime 2 para salir ");
+		} while (this.scanner() != 2);
+		do {
+			System.out.println("Correo Electrónico");
+			String cadena = this.scaner();
+			c.getCorreo().agregar(cadena);
+			System.out.println("¿Desea insertar otro correo? Oprima 1");
+			System.out.println("Oprime 2 para salir ");
+		} while (this.scanner() != 2);
+
+	}
+
+	public void eliminaContacto() {
+		System.out.println("Contacto a eliminr:");
+		String modificar = this.scaner();
+		NodoContacto aux = inicio;
+		NodoContacto aux2 = null;
+		boolean bandera = false;
+		while (aux != null && bandera == false) {
+
+			if (aux.contacto.nombre.equals(modificar)) {
+				bandera = true;
+			}
+
+			if (bandera != true) {
+				aux2 = aux;
+				aux = aux.getSiguiente();
+			}
+		}
+
+		if (bandera) {
+
+			if (aux2 != null) {
+				if (aux.getSiguiente() != null) {
+					aux2.setSiguiente(aux.getSiguiente());
+				} else {
+					aux2.setSiguiente(null);
+					aux = null;
+				}
+			} else {
+
+				if (aux.getSiguiente() == null) {
+					inicio = null;
+				} else {
+					inicio = aux.getSiguiente();
+
+				}
+			}
+		}
+
+		else {
+			System.out.println("Este contacto no se encentra en tu agenda");
+		}
+
+	}
+
+	public void buscaContacto() {
+		System.out.println("Nombre contacto:");
+		String modificar = this.scaner();
+		NodoContacto aux = inicio;
+		boolean bandera = false;
+		while (aux != null && bandera == false) {
+			if (aux.contacto.nombre.equals(modificar)) {
+
+				bandera = true;
+			}
+			if (bandera != true) {
+				aux = aux.getSiguiente();
+			}
+		}
+		this.imprimir(aux);
+
+	}
+
+	public void imprimir(NodoContacto aux) {
+		System.out.printf("Nombre: %s %n", aux.contacto.nombre);
+		System.out.printf("Direccion: %s %n", aux.contacto.direccion);
+		System.out.printf("Fecha de nacimiento: %s ",
+				aux.contacto.fechaNacimiento);
+		System.out.printf("Telefonos: %s %n",
+		aux.contacto.getTelefono().contador());
+	}
+}
