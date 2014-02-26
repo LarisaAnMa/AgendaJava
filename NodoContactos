@@ -1,0 +1,27 @@
+public class NodoContacto {
+
+	public Contacto contacto;
+	public NodoContacto siguiente;
+
+	public Contacto getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(Contacto contacto) {
+		this.contacto = contacto;
+	}
+
+	public NodoContacto getSiguiente() {
+		return siguiente;
+	}
+
+	public void setSiguiente(NodoContacto siguiente) {
+		this.siguiente = siguiente;
+	}
+
+	public NodoContacto(Contacto c) {
+		this.contacto = c;
+		this.siguiente = null;
+	}
+
+}
